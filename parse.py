@@ -1,5 +1,5 @@
 
-
+import http.cookiejar
 import requests
 import json
 from bs4 import BeautifulSoup as BS
@@ -9,7 +9,15 @@ ValueOfResaults = []
 SumBet = 0
 Link = ""
 Bets = []
-response = requests.get('https://csgo500.com/crash/history/before/')
+
+####### cookie
+cookie = {
+    "__cfduid": "d05215d9087bd1c4bedc6c712fd423c8a1585849850",
+    "express.sid": "s%3Ar0yi7P4wIkj1jdkO_zexh1fIjlKMnI6x.6JPXTM10YeiZHbOVOM%2BmlXvDeAO3Ebh1S8Ya3WY%2BiCM",
+    "_ga": "GA1.2.510722999.1585849893"
+}
+####### cookie
+response = requests.get('https://csgo500.com/crash/history/before/', cookies=cookie)
 JsonHistory = json.loads(response.text)
 
 for element in JsonHistory:
@@ -17,7 +25,7 @@ for element in JsonHistory:
     Data = element["endDate"]
     # нужна проверка наличия  в базе (также подключить mysql ,  к примеру. чтобы вести записи, но пока просто на вывод).
     Link = 'https://csgo500.com/crash/history/single/' + str(element["roundId"])
-    ResponseBet = requests.get(Link)
+    ResponseBet = requests.get(Link, cookies=cookie)
     JsonBets = json.loads(ResponseBet.text)
     print(JsonBets)
     #Если посмотреть данные ссылки типа
